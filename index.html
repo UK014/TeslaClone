@@ -1,0 +1,148 @@
+<html>
+<head>
+    <link rel="stylesheet" href="index.css">
+    <script src="func.js"></script>
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <script nomodule src="https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js"></script>
+</head>
+<body>
+    <div id="main">
+        <nav>
+            <span>TESLA</span>
+            <a style="text-decoration: none;color:blackwhite;" href="tesla.html">Home</a>
+            <a>About</a>
+            <a>Contact</a>
+        </nav>
+        <div id="mid">
+            <model-viewer id="tesla" src="/Yeni klasör (2)/scene.gltf" autoplay rotation="0 180 0" camera-controls></model-viewer>
+            <div id="purchase-div">
+                <div id="black" onclick="checkBlackCar();handleDivClick('black');"></div>
+                <div id="blue" onclick="checkBlueCar();handleDivClick('blue');"></div>
+                <div id="green" onclick="checkGreenCar();handleDivClick('green');"></div>
+                <div id="red" onclick="checkRedCar();handleDivClick('red');"></div>
+                <div id="white" onclick="checkWhiteCar();handleDivClick('white');"></div>
+                <button id="purch" class="button-58" role="button" onclick="purchase()">Purchase</button>
+            </div>
+            <button id="examine" role="button" onclick="examine()">Examine</button>
+        </div>
+    </div>
+
+    <script>
+      let lastClickedDiv = null;
+
+      function handleDivClick(divId) {
+        lastClickedDiv = divId;
+        console.log(`Last clicked div: ${divId}`);
+      }
+      
+      function purchase() {
+        if (lastClickedDiv) {
+          const data = { color: lastClickedDiv };
+      
+          fetch('/purchase', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+          })
+            .then(response => {
+              if (response.ok) {
+                console.log('Purchase request sent successfully.');
+                alert("Purchased Succesfully");
+              } else {
+                throw new Error('Failed to send purchase request.');
+              }
+            })
+            .catch(error => {
+              console.error('Error while sending purchase request:', error);
+            });
+        } else {
+          console.error('No div clicked yet. Please click a div before making a purchase.');
+        }
+      }
+  
+        function checkBlackCar() {
+            fetch('/checkBlackCar')
+              .then(response => response.json())
+              .then(data => {
+                if (data.status === 'found') {
+                  console.log('Black cars not sold:', data.carsNotSold);
+                  document.getElementById("purch").disabled = false;
+                } else {
+                  console.log('No black cars not sold found in the database.');
+                  document.getElementById("purch").disabled = true;
+                }
+              })
+              .catch(error => {
+                console.error('Error while checking black car:', error);
+              });
+          }
+          function checkWhiteCar() {
+            fetch('/checkWhiteCar')
+              .then(response => response.json())
+              .then(data => {
+                if (data.status === 'found') {
+                  console.log('White cars not sold:', data.carsNotSold);
+                  document.getElementById("purch").disabled = false;
+                } else {
+                  console.log('No White cars not sold found in the database.');
+                  document.getElementById("purch").disabled = true;
+                }
+              })
+              .catch(error => {
+                console.error('Error while checking White car:', error);
+              });
+          }
+          function checkBlueCar() {
+            fetch('/checkBlueCar')
+              .then(response => response.json())
+              .then(data => {
+                if (data.status === 'found') {
+                  console.log('Blue cars not sold:', data.carsNotSold);
+                  document.getElementById("purch").disabled = false;
+                } else {
+                  console.log('No Blue cars not sold found in the database.');
+                  document.getElementById("purch").disabled = true;
+                }
+              })
+              .catch(error => {
+                console.error('Error while checking White car:', error);
+              });
+          }
+          function checkGreenCar() {
+            fetch('/checkGreenCar')
+              .then(response => response.json())
+              .then(data => {
+                if (data.status === 'found') {
+                  console.log('Green cars not sold:', data.carsNotSold);
+                  document.getElementById("purch").disabled = false;
+                } else {
+                  console.log('No Green cars not sold found in the database.');
+                  document.getElementById("purch").disabled = true;
+                }
+              })
+              .catch(error => {
+                console.error('Error while checking White car:', error);
+              });
+          }
+          function checkRedCar() {
+            fetch('/checkRedCar')
+              .then(response => response.json())
+              .then(data => {
+                if (data.status === 'found') {
+                  console.log('Red cars not sold:', data.carsNotSold);
+                  document.getElementById("purch").disabled = false;
+                } else {
+                  console.log('No Red cars not sold found in the database.');
+                  document.getElementById("purch").disabled = true;
+                }
+              })
+              .catch(error => {
+                console.error('Error while checking White car:', error);
+              });
+          }
+          
+    </script>
+</body>
+</html>
